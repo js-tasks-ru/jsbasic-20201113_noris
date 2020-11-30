@@ -12,7 +12,6 @@ function sumSalary(salaries) {
 
     if( typeof salaries[key] === "number" ) {
       res += salaries[key];
-      console.log("true: ", res);
     } else {
 		return res;
 	}
