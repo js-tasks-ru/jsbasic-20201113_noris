@@ -49,47 +49,38 @@ export default class Carousel {
 			carousel.dispatchEvent(event);
 		})
 
-		// setTimeout(() => {
 		//Предыдущий код слайдера
-
 		let buttonLeft = carousel.querySelector(".carousel__arrow_left");
 		let buttonRight = carousel.querySelector(".carousel__arrow_right");
 		let sliderInner = carousel.querySelector(".carousel__inner");
-		let sliderWidth
-
+		let sliderWidth = carousel.querySelector(".carousel__slide");
+		let click = 0;
 		let sum = 0;
 
-		document.addEventListener("DOMContentLoaded", () => {
-
-			sliderWidth = document.querySelector(".carousel__slide").offsetWidth;
-			console.log(sliderWidth)
-
-		})
-
 		buttonLeft.style.display = "none";
+
 		buttonRight.onclick = () => {
-
 			buttonLeft.style.display = "flex";
-			sum -= sliderWidth;
+			sum -= sliderWidth.offsetWidth;
 			sliderInner.style.transform = `translateX(${sum}px)`;
+			++click;
 
-			if (sum == -sliderWidth * 3) {
+			if (click == this.slides.length - 1) {
 				buttonRight.style.display = "none";
 			}
 
 		};
 
 		buttonLeft.onclick = () => {
-
 			buttonRight.style.display = "flex";
-			sum += sliderWidth
+			sum += sliderWidth.offsetWidth;
 			sliderInner.style.transform = `translateX(${sum}px)`;
+			--click;
 
 			if (sum == 0) {
 				buttonLeft.style.display = "none";
 			}
 		};
-		// }, 0)
 
 		return carousel;
 	}
