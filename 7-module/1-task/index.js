@@ -30,8 +30,8 @@ export default class RibbonMenu {
 		ribbon.append(this.inner);
 		ribbon.append(this.buttonRight);
 
-		this.buttonRight.addEventListener("click", this.onClick);
-		this.buttonLeft.addEventListener("click", this.onClick);
+		ribbon.addEventListener("click", this.onClick);
+
 
 		return ribbon;
 	}
@@ -40,10 +40,24 @@ export default class RibbonMenu {
 		let scrollWidth = this.inner.scrollWidth;
 		let scrollLeft = this.inner.scrollLeft;
 		let clientWidth = this.inner.clientWidth;
-
 		let scrollRight = scrollWidth - scrollLeft - clientWidth;
+		let eventCustom = new CustomEvent('ribbon-select', {
+			detail: event.target.dataset.id,
+			bubbles: true
+		})
+		let ribbonItems = this.inner.querySelectorAll(".ribbon__item");
 
-		if (event.currentTarget.classList.contains("ribbon__arrow_left")) {
+		if (event.target.classList.contains("ribbon__item")) {
+
+			event.preventDefault();
+			for (let prop of ribbonItems) {
+				prop.classList.remove("ribbon__item_active");
+			}
+			event.target.classList.add("ribbon__item_active");
+			this.elem.dispatchEvent(eventCustom);
+		}
+
+		if (event.target.classList.contains("ribbon__arrow_left")) {
 			this.inner.scrollBy(-350, 0);
 			this.buttonRight.classList.add("ribbon__arrow_visible");
 
@@ -51,17 +65,12 @@ export default class RibbonMenu {
 				this.buttonLeft.classList.remove("ribbon__arrow_visible");
 			}
 		}
-		if (event.currentTarget.classList.contains("ribbon__arrow_right")) {
+		if (event.target.classList.contains("ribbon__arrow_right")) {
 			this.inner.scrollBy(350, 0);
 			this.buttonLeft.classList.add("ribbon__arrow_visible");
 			if (scrollRight < 190) {
 				this.buttonRight.classList.remove("ribbon__arrow_visible");
 			}
-			console.log(scrollRight)
 		}
-
-		this.inner.addEventListener("scroll", () => {
-			console.log(111)
-		})
 	}
 }
