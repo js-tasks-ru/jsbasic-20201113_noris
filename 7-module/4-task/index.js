@@ -142,7 +142,7 @@ export default class StepSlider {
 				bubbles: true
 			})
 
-			this.elem.dispatchEvent(eventMove);
+			slider.dispatchEvent(eventMove);
 		}
 
 		function onMouseUp() {
