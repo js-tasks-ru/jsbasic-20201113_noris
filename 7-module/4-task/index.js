@@ -121,17 +121,13 @@ export default class StepSlider {
 
 			if (currentDroppable != droppableBelow) {
 
-				if (currentDroppable) { // null если мы были не над droppable до этого события
-					// (например, над пустым пространством)
-					// leaveDroppable(currentDroppable);
+				if (currentDroppable) {
 					document.body.style.background = "black";
 				}
 
 				currentDroppable = droppableBelow;
 
-				if (currentDroppable) { // null если мы не над droppable сейчас, во время этого события
-					// (например, только что покинули droppable)
-					// enterDroppable(currentDroppable);
+				if (currentDroppable) {
 					valueSpan.innerHTML = spanItem[value].dataset.index;
 					document.body.style.background = "green";
 				}

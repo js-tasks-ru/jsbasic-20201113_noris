@@ -14,13 +14,13 @@ export default class Cart {
 			this.cartItems.some((item) => {
 				if (item.product.id == product.id) {
 					item.count++;
-					console.log(item);
+					// console.log(item);
 				}
 			});
 
 		} else {
 			this.cartItems.push({ product, count: 1 });
-			console.log(this.cartItems);
+			// console.log(this.cartItems);
 		}
 
 		this.onProductUpdate(this.cartItem);
@@ -28,7 +28,7 @@ export default class Cart {
 
 	updateProductCount(productId, amount) {
 		// ваш код
-		console.log(productId, amount);
+		// console.log(productId, amount);
 
 		if (!this.isEmpty(this.cartItems)) {
 			this.cartItems.some((item, i) => {
@@ -38,17 +38,17 @@ export default class Cart {
 					if (amount == 1) {
 						item.count++;
 						// this.getTotalCount();
-						console.log(item, i, "== индекс");
+						// console.log(item, i, "== индекс");
 					} else {
 						item.count--;
-						console.log(item, i, "== индекс");
+						// console.log(item, i, "== индекс");
 						// this.getTotalCount();
 					}
 
 					if (item.count == 0) {
 						// console.log("kfjekeowekg")
 						this.cartItems.splice(i, 1);
-						console.log(this.cartItems);
+						// console.log(this.cartItems);
 					}
 				}
 			});
@@ -75,7 +75,7 @@ export default class Cart {
 
 			});
 
-			console.log("количество", sum);
+			// console.log("количество", sum);
 		}
 
 		return sum;
@@ -91,7 +91,7 @@ export default class Cart {
 				// console.log("item = ", item.count)
 
 			});
-			console.log("сумма", sum);
+			// console.log("сумма", sum);
 		}
 
 		return sum;
