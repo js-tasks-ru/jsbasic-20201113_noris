@@ -36,6 +36,9 @@ export default class StepSlider {
 		this.spanItem = elem.querySelectorAll(".slider__steps span");
 		this.spanItem[0].classList.add("slider__step-active");
 
+		// this.thumb.style.left = `75%`;
+		// this.progress.style.width = `75%`;
+
 		elem.addEventListener("click", this.onClick);
 
 		this.thumb.addEventListener("pointerdown", this.sliderMouse);
@@ -122,14 +125,14 @@ export default class StepSlider {
 			if (currentDroppable != droppableBelow) {
 
 				if (currentDroppable) {
-					document.body.style.background = "black";
+					// document.body.style.background = "black";
 				}
 
 				currentDroppable = droppableBelow;
 
 				if (currentDroppable) {
 					valueSpan.innerHTML = spanItem[value].dataset.index;
-					document.body.style.background = "green";
+					// document.body.style.background = "green";
 				}
 			}
 

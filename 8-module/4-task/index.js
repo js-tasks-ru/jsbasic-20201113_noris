@@ -31,7 +31,7 @@ export default class Cart {
 			// console.log(this.cartItems);
 		}
 
-		this.onProductUpdate(this.cartItems);
+		this.onProductUpdate(this.cartItem);
 	}
 
 	updateProductCount(productId, amount) {
@@ -104,6 +104,7 @@ export default class Cart {
 	}
 
 	renderProduct(product, count) {
+		console.log(product)
 		return createElement(`
 			<div class="cart-product" data-product-id="${product.id}">
 				<div class="cart-product__img">
@@ -153,7 +154,9 @@ export default class Cart {
 	renderModal() {
 		// ...ваш код
 		let template = createElement(`<div></div>`);
+		console.log("array: ", this.cartItems)
 		for (let prop of this.cartItems) {
+			console.log("prop: ", prop)
 			template.insertAdjacentElement("beforeend", this.renderProduct(prop.product, prop.count))
 		}
 
@@ -168,18 +171,22 @@ export default class Cart {
 	}
 
 	click = event => {
-		this.product = event.target.closest(".cart-counter__button").closest(".cart-product");
-		this.dataId = this.product.dataset.productId;
-		this.counter = this.product.querySelector(".cart-counter__count");
-		this.price = this.product.querySelector(".cart-product__price");
+		let check = event.target.closest(".cart-counter__button");
+		if (check) {
+			this.product = event.target.closest(".cart-counter__button").closest(".cart-product");
+			this.dataId = this.product.dataset.productId;
+			this.counter = this.product.querySelector(".cart-counter__count");
+			this.price = this.product.querySelector(".cart-product__price");
 
-		if (event.target.closest(".cart-counter__button_plus")) {
-			this.updateProductCount(this.dataId, 1);
+			if (event.target.closest(".cart-counter__button_plus")) {
+				this.updateProductCount(this.dataId, 1);
+			}
+
+			if (event.target.closest(".cart-counter__button_minus")) {
+				this.updateProductCount(this.dataId, -1);
+			}
 		}
 
-		if (event.target.closest(".cart-counter__button_minus")) {
-			this.updateProductCount(this.dataId, -1);
-		}
 	}
 
 	onProductUpdate(cartItems) {
@@ -215,8 +222,7 @@ export default class Cart {
 
 	onSubmit(event) {
 		// ...ваш код
-		let that = this;
-		console.log(that)
+
 		if (event.target.closest(".cart-form")) {
 
 			event.preventDefault();
@@ -244,9 +250,7 @@ export default class Cart {
 					</div>`;
 					modalBody.innerHTML = template;
 
-
 				}, 2000)
-				console.log(this.cartItems.bind(this))
 			})
 		}
 

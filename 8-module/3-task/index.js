@@ -54,7 +54,7 @@ export default class Cart {
 			});
 		}
 
-		this.onProductUpdate(this.cartItem);
+		this.onProductUpdate(this.cartItems);
 	}
 
 	isEmpty() {

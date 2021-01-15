@@ -72,7 +72,7 @@
 
 			let addProductId = button.dataset.addProductId;
 			let productToAdd = products.find((product) => product.id === addProductId);
-
+			console.log(addProductId, productToAdd)
 			if (productToAdd) {
 				cart.addProduct(productToAdd);
 			}
