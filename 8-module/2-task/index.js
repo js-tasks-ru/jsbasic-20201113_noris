@@ -1,47 +1,49 @@
-
 import createElement from '../../assets/lib/create-element.js';
 import ProductCard from '../../6-module/2-task/index.js';
 
 export default class ProductGrid {
-	constructor(products) {
-		this.products = products;
-		this.filters = {};
-		this.elem = this.render();
-		this.array = [];
-	}
+  constructor(products) {
+    this.products = products;
+    this.filters = {};
+    this.render();
+  }
 
-	render() {
-		this.elem2 = createElement('<div class="products-grid"><div class="products-grid__inner"></div></div>');
-		this.renderContent()
+  render() {
+    this.elem = createElement(`<div class="products-grid">
+      <div class="products-grid__inner"></div>
+    </div>`);
 
-		return this.elem2
-	}
+    this.renderContent();
+  }
 
-	renderContent() {
+  renderContent() {
+    this.sub('inner').innerHTML = '';
 
-		let elemInner = this.elem2.querySelector(".products-grid__inner");
+    for (let product of this.products) {
+      if (this.filters.noNuts && product.nuts) {continue;}
 
-		elemInner.innerHTML = '';
+      if (this.filters.vegeterianOnly && !product.vegeterian) {continue;}
 
-		for (let prop of this.products) {
+      if (this.filters.maxSpiciness !== undefined && product.spiciness > this.filters.maxSpiciness) {
+        continue;
+      }
 
-			if (this.filters.noNuts && prop.nuts)
-				continue;
-			if (this.filters.vegeterianOnly && !prop.vegeterian)
-				continue;
-			if (this.filters.maxSpiciness && prop.spiciness > this.filters.maxSpiciness)
-				continue;
-			if (this.filters.category && prop.category != this.filters.category)
-				continue;
+      if (this.filters.category && product.category != this.filters.category) {
+        continue;
+      }
 
-			let productCard = new ProductCard(prop);
-			elemInner.append(productCard.elem);
-		}
-	}
+      let card = new ProductCard(product);
+      this.sub("inner").append(card.elem);
+    }
+  }
 
-	updateFilter(filters) {
-		Object.assign(this.filters, filters),
-			this.renderContent()
-	}
+  updateFilter(filters) {
+    Object.assign(this.filters, filters);
+    this.renderContent();
+  }
+
+  sub(ref) {
+    return this.elem.querySelector(`.products-grid__${ref}`);
+  }
 
 }

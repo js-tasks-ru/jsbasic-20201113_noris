@@ -5,74 +5,62 @@
  * Пример одного элемента, описывающего строку таблицы
  *
  *      {
-	 *          name: '',
-	 *          age: 25,
-	 *          salary: '1000',
-	 *          city: 'Petrozavodsk'
-	 *   },
- *
- * @constructor
- */
-/**
- * Компонент, который реализует таблицу
- * с возможностью удаления строк
- *
- * Пример одного элемента, описывающего строку таблицы
- *
- *      {
- *          name: 'Ilia',
- *          age: 25,
- *          salary: '1000',
- *          city: 'Petrozavodsk'
- *      },ы
+     *          name: 'Ilia',
+     *          age: 25,
+     *          salary: '1000',
+     *          city: 'Petrozavodsk'
+     *      },
  *
  * @constructor
  */
 export default class UserTable {
-	constructor(rows) {
-		this.data = rows;
-		this.elem = this.render();
-	}
+  constructor(rows) {
+    this.elem = document.createElement('table');
 
-	render() {
-		this.table = document.createElement("table");
-		let template = `
-		<thead>
-				<tr>
-					<th>Имя</th>
-					<th>Возраст</th>
-					<th>Зарплата</th>
-					<th>Город</th>
-					<th></th>
-				</tr>
-		</thead>
-		<tbody></tbody>`;
+    this.elem.innerHTML = `
+      <thead>
+          <tr>
+            <td>Имя</td>
+            <td>Возраст</td>
+            <td>Зарплата</td>
+            <td>Город</td>
+            <td></td>
+          </tr>
+      </thead>
+    `;
 
-		this.table.insertAdjacentHTML("beforeend", template);
-		let tbody = this.table.querySelector("tbody");
+    let tbody = this.elem.querySelector('tbody');
 
-		for (let prop of this.data) {
+    let tableInner = rows.map(row => {
+      let cellsWithData = Object.values(row) // для каждого значения из объекта row
+        .map(value => `<td>${value}</td>`) // обернуть его в <td>
+        .join(''); // полученный массив <td>...</td> объединить в одну строку
 
-			let tmp = `
-				<tr>
-					<td>${prop.name}</td>
-					<td>${prop.age}</td>
-					<td>${prop.salary}</td>
-					<td>${prop.city}</td>
-					<td>
-						<button>X</button>
-					</td>
-				</tr>`;
+      return `
+          <tr>
+            ${cellsWithData}
+            <td><button>X</button></td>
+          </tr>
+        `; // возвращаем верстку одной строки
+    }).join('');
 
-			tbody.insertAdjacentHTML("beforeend", tmp);
-		}
+    this.elem.innerHTML += `
+      <tbody>
+        ${tableInner}
+      <tbody>
+    `; // оборачиваем полученные строчки в tbody
 
-		this.table.addEventListener("click", e => {
-			if (e.target.closest("button")) {
-				e.target.closest('tr').remove();
-			};
-		});
+    this.elem.addEventListener('click', (event) => this.onClick(event));
+  }
 
-		return this.table;
-	}
+  onClick(event) {
+    if (event.target.tagName != 'BUTTON') {
+      return;
+    }
+
+    let tr = event.target.closest('tr');
+
+    tr.remove();
+  }
+
 }

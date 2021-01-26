@@ -1,107 +1,57 @@
-/ eslint-disable indent /
 export default class Cart {
-	cartItems = []; // [product: {...}, count: N]
+  cartItems = []; // [product: {...}, count: N]
 
-	constructor(cartIcon) {
-		this.cartIcon = cartIcon;
-	}
+  constructor(cartIcon) {
+    this.cartIcon = cartIcon;
+  }
 
-	addProduct(product) {
-		// ваш код
+  addProduct(product) {
+    let cartItem = this.cartItems.find(
+      item => item.product.id == product.id
+    );
+    if (!cartItem) {
+      cartItem = {
+        product,
+        count: 1
+      };
+      this.cartItems.push(cartItem);
+    } else {
+      cartItem.count++;
+    }
 
-		if ((this.cartItems.some(item => item.product.id == product.id))) {
+    this.onProductUpdate(cartItem);
+  }
 
-			this.cartItems.some((item) => {
-				if (item.product.id == product.id) {
-					item.count++;
-					// console.log(item);
-				}
-			});
+  updateProductCount(productId, amount) {
+    let cartItem = this.cartItems.find(item => item.product.id == productId);
+    cartItem.count += amount;
 
-		} else {
-			this.cartItems.push({ product, count: 1 });
-			// console.log(this.cartItems);
-		}
+    if (cartItem.count === 0) {
+      this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
+    }
 
-		this.onProductUpdate(this.cartItem);
-	}
+    this.onProductUpdate(cartItem);
+  }
 
-	updateProductCount(productId, amount) {
-		// ваш код
-		// console.log(productId, amount);
+  onProductUpdate() {
+    // реализуем в следующей задаче
 
-		if (!this.isEmpty(this.cartItems)) {
-			this.cartItems.some((item, i) => {
+    this.cartIcon.update(this);
+  }
 
-				if (item.product.id == productId) {
+  isEmpty() {
+    return this.cartItems.length === 0;
+  }
 
-					if (amount == 1) {
-						item.count++;
-						// this.getTotalCount();
-						// console.log(item, i, "== индекс");
-					} else {
-						item.count--;
-						// console.log(item, i, "== индекс");
-						// this.getTotalCount();
-					}
+  getTotalCount() {
+    return this.cartItems.reduce((sum, item) => sum + item.count, 0);
+  }
 
-					if (item.count == 0) {
-						// console.log("kfjekeowekg")
-						this.cartItems.splice(i, 1);
-						// console.log(this.cartItems);
-					}
-				}
-			});
-		}
-
-		this.onProductUpdate(this.cartItems);
-	}
-
-	isEmpty() {
-		// ваш код
-		for (let key in this.cartItems) {
-			return false;
-		}
-		return true;
-	}
-
-	getTotalCount() {
-		// ваш код
-		let sum = 0;
-
-		if (!this.isEmpty()) {
-			this.cartItems.forEach(item => {
-				sum += item.count;
-
-			});
-
-			// console.log("количество", sum);
-		}
-
-		return sum;
-	}
-
-	getTotalPrice() {
-		// ваш код
-		let sum = 0;
-
-		if (!this.isEmpty()) {
-			this.cartItems.forEach(item => {
-				sum += item.product.price * item.count;
-				// console.log("item = ", item.count)
-
-			});
-			// console.log("сумма", sum);
-		}
-
-		return sum;
-	}
-
-	onProductUpdate(cartItem) {
-		// реализуем в следующей задаче
-
-		this.cartIcon.update(this);
-	}
-
-
+  getTotalPrice() {
+    return this.cartItems.reduce(
+      (sum, item) => sum + item.product.price * item.count,
+      0
+    );
+  }
 }
+
