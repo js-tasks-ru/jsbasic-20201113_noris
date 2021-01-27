@@ -1,32 +1,48 @@
 function initCarousel() {
-	// ваш код...
-	let buttonLeft = document.querySelector(".carousel__arrow_left");
-	let buttonRight = document.querySelector(".carousel__arrow_right");
-	let sliderInner = document.querySelector(".carousel__inner");
-	let sliderWidth = document.querySelector(".carousel__slide").offsetWidth;
-	let sum = 0;
-	buttonLeft.style.display = "none";
+  let currentSlideNumber = 0;
+  let slidesAmount = 4;
+  let elem = document.querySelector('[data-carousel-holder]');
 
-	buttonRight.onclick = () => {
+  let carouselInnerElem = elem.querySelector('.carousel__inner');
+  let carouselArrowRight = elem.querySelector('.carousel__arrow_right');
+  let carouselArrowLeft = elem.querySelector('.carousel__arrow_left');
 
-		buttonLeft.style.display = "flex";
-		sum -= sliderWidth;
-		sliderInner.style.transform = `translateX(${sum}px)`;
+  update();
 
-		if (sum == -sliderWidth * 3) {
-			buttonRight.style.display = "none";
-		}
+  elem.onclick = ({target}) => {
+    if (target.closest('.carousel__arrow_right')) {
+      next();
+    }
 
-	};
+    if (target.closest('.carousel__arrow_left')) {
+      prev();
+    }
+  };
 
-	buttonLeft.onclick = () => {
+  function next() {
+    currentSlideNumber++;
+    update();
+  }
 
-		buttonRight.style.display = "flex";
-		sum += sliderWidth
-		sliderInner.style.transform = `translateX(${sum}px)`;
+  function prev() {
+    currentSlideNumber--;
+    update();
+  }
 
-		if (sum == 0) {
-			buttonLeft.style.display = "none";
-		}
-	};
+  function update() {
+    let offset = -carouselInnerElem.offsetWidth * currentSlideNumber;
+    carouselInnerElem.style.transform = `translateX(${offset}px)`;
+
+    if (currentSlideNumber == slidesAmount - 1) {
+      carouselArrowRight.style.display = 'none';
+    } else {
+      carouselArrowRight.style.display = '';
+    }
+
+    if (currentSlideNumber == 0) {
+      carouselArrowLeft.style.display = 'none';
+    } else {
+      carouselArrowLeft.style.display = '';
+    }
+  }
 }

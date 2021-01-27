@@ -3,9 +3,11 @@
  * @return {void}
  */
 function makeDiagonalRed(table) {
-	table.rows[0].cells[0].style.background = "red"
-	table.rows[1].cells[1].style.background = "red"
-	table.rows[2].cells[2].style.background = "red"
-	table.rows[3].cells[3].style.background = "red"
-	table.rows[4].cells[4].style.background = "red"
+  let rowsLength = table.rows.length;
+  let rows = table.rows;
+
+  for (let i = 0; i < rowsLength; i++) {
+    let row = rows[i];
+    row.cells[i].style.backgroundColor = 'red';
+  }
 }

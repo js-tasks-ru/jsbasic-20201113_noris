@@ -1,35 +1,45 @@
+const FIRST_COLUMN = 1;
+const SECOND_COLUMN = 2;
+const THIRD_COLUMN = 3;
+
 /**
  * Метод устанавливает необходимые по условию аттрибуты таблице
  * @param {Element} table
  */
 function highlight(table) {
+  const actions = {
+    [THIRD_COLUMN]: (root, td) => {
+      if (td.dataset.available === 'true') {
+        root.classList.toggle('available', true);
+      } else if (td.dataset.available === 'false') {
+        root.classList.toggle('unavailable', true);
+      } else if (!td.hasAttribute('data-available')) {
+        root.hidden = true;
+      }
+    },
+    [SECOND_COLUMN]: (root, td) => {
+      if (td.textContent === 'm') {
+        root.classList.toggle('male', true);
+      } else if (td.textContent === 'f') {
+        root.classList.toggle('female', true);
+      }
+    },
+    [FIRST_COLUMN]: (root, td) => {
+      const age = parseInt(td.textContent, 10);
 
-	let rows = table.querySelector("tbody").children;
+      if (age < 18) {
+        root.style.textDecoration = 'line-through';
+      }
+    },
+  };
 
-	for(let child of rows) {
+  for (const tr of table.rows) {
+    Array.from(tr.cells).forEach((td, index) => {
+      const fn = actions[index];
 
-		let status = child.cells[3]
-		let gender = child.cells[2]
-		let age = child.cells[1]
-
-		if(status.getAttribute("data-available") === "true") {
-			child.classList.add("available")
-		} else if(status.getAttribute("data-available") === "false") {
-			child.classList.add("unavailable")
-		}
-
-		if(!status.hasAttribute("data-available")) {
-			child.setAttribute("hidden", "")
-		}
-
-		if(gender.innerHTML == "m"){
-			child.classList.add("male")
-		} else if (gender.innerHTML == "f") {
-			child.classList.add("female")
-		}
-
-		if(age.innerHTML < 18) {
-			child.style="text-decoration: line-through";
-		}
-	}
+      if (typeof fn === 'function') {
+        fn(tr, td);
+      }
+    });
+  }
 }
